@@ -1,0 +1,13 @@
+{
+  "name": "@gzdl/utils",
+  "version": "1.0.1",
+  "private": true,
+  "description": "公用工具包",
+  "main": "index.ts",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC"
+}
