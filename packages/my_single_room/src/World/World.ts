@@ -3,6 +3,7 @@ import Experience from "../Experience/Experience";
 import Resources from '../utils/Resources';
 import Environment from './Environment';
 import Room from './Room';
+import Tv from './Tv';
 import Floor from './Floor';
 
 export default class World {
@@ -11,6 +12,7 @@ export default class World {
   resources: Resources;
   environment!: Environment;
   room!: Room;
+  tv!: Tv;
   floor!: Floor;
   constructor() {
     this.experience = new Experience();
@@ -21,6 +23,7 @@ export default class World {
     this.resources.on('ready', () => {
       this.environment = new Environment();
       this.room = new Room();
+      this.tv = new Tv();
       this.floor = new Floor();
     });
   }

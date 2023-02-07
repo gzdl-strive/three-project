@@ -10,7 +10,11 @@ export interface Video {
 export interface VideoTexture {
   [key: string]: THREE.VideoTexture;
 }
+/* 房子 */
 export interface RoomType {
   scene: THREE.Group;
   animations: THREE.AnimationClip[];
+}
+export interface TvType {
+  scene: THREE.Group;
 }

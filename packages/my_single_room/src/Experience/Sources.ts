@@ -8,7 +8,12 @@ const sources: SourceList[] = [
     imgPath: '/textures/room_baked.jpg'
   },
   {
-    name: 'screen',
+    name: 'tv',
+    type: 'glbModel',
+    path: '/models/tv.glb'
+  },
+  {
+    name: 'tv_video',
     type: 'videoTexture',
     path: '/textures/test.mp4'
   }
