@@ -1,5 +1,4 @@
 import * as THREE from 'three';
-// import GSAP from 'gsap';
 import Experience from '../Experience/Experience';
 import Resources from '../utils/Resources';
 import { RoomType } from '../utils/typing';
@@ -69,6 +68,14 @@ class Room {
             magicBlock.material = magicBlockMaterial;
           }
         }
+      }
+      // 设置键盘
+      if (child.name.startsWith('keyboard')) {
+        const keyboard = child as THREE.Mesh;
+        const keyboardMaterial = new THREE.MeshBasicMaterial({
+          color: 0x000000
+        });
+        keyboard.material = keyboardMaterial;
       }
 
       this.actualRoom.scale.set(0.4, 0.4, 0.4);
