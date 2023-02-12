@@ -7,7 +7,6 @@ export default class Camera {
   sizes: Sizes;
   scene: THREE.Scene;
   canvas: HTMLCanvasElement | undefined;
-  perspectiveCamera: THREE.PerspectiveCamera | null;
   orthographicCamera: THREE.OrthographicCamera | null;
   helper: THREE.CameraHelper | null;
 
@@ -17,26 +16,10 @@ export default class Camera {
     this.scene = this.experience.scene;
     this.canvas = this.experience.canvas;
 
-    this.perspectiveCamera = null;
     this.orthographicCamera = null;
     this.helper = null;
 
-    this.setPerspectiveCamera();
     this.setOrthographicCamera();
-  }
-
-  // 设置perspectiveCamera
-  setPerspectiveCamera() {
-    this.perspectiveCamera = new THREE.PerspectiveCamera(
-      35,
-      this.sizes.aspect,
-      0.1,
-      1000
-    );
-    this.scene.add(this.perspectiveCamera);
-    this.perspectiveCamera.position.x = 22;
-    this.perspectiveCamera.position.y = 36;
-    this.perspectiveCamera.position.z = 2;
   }
 
   // 设置orthographicCamera--正交相机
@@ -70,10 +53,6 @@ export default class Camera {
   }
 
   resize() {
-    if (!this.perspectiveCamera) return;
-    // 更新perspectiveCamera
-    this.perspectiveCamera.aspect = this.sizes.aspect;
-    this.perspectiveCamera.updateProjectionMatrix();
     // 更新orthographicCamera
     if (!this.orthographicCamera) return;
     this.orthographicCamera.left = -this.sizes.aspect * this.sizes.orthographicNum / 2;
