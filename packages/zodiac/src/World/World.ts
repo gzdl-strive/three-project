@@ -1,0 +1,32 @@
+import * as THREE from 'three';
+// import GSAP from 'gsap';
+import Experience from "../Experience/Experience";
+import Resources from '../utils/Resources';
+import Environment from './Environment';
+import Floor from './Floor';
+import Zodiac from './Zodiac';
+
+export default class World {
+  experience: Experience;
+  scene: THREE.Scene;
+  resources: Resources;
+  environment!: Environment;
+  floor!: Floor;
+  zodiac!: Zodiac;
+  constructor() {
+    this.experience = new Experience();
+    this.scene = this.experience.scene;
+    this.resources = this.experience.resources;
+
+    // Wait from resources
+    this.resources.on('ready', () => {
+      this.environment = new Environment();
+      this.floor = new Floor();
+      this.zodiac = new Zodiac();
+    });
+  }
+
+  resize() {}
+
+  update() {}
+}
