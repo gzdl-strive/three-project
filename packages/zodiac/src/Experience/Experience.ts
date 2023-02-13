@@ -1,17 +1,21 @@
 import * as THREE from 'three';
 
 import { Sizes, Time } from '@gzdl/utils';
-import Camera from './Camera';
-import Renderer from './Renderer';
-import World from '../World/World';
+import Debug from '../utils/Debug';
 import Resources from '../utils/Resources';
 import Sources from './Sources';
+
+import Camera from './Camera';
+import Renderer from './Renderer';
+
+import World from '../World/World';
 
 class Experience {
   static instance: Experience;
   canvas: HTMLCanvasElement | undefined;
   sizes!: Sizes;
   time!: Time;
+  debug!: Debug;
   scene!: THREE.Scene;
   camera!: Camera;
   renderer!: Renderer;
@@ -30,6 +34,7 @@ class Experience {
     this.scene = new THREE.Scene();
     this.sizes = new Sizes();
     this.time = new Time();
+    this.debug = new Debug();
     this.camera = new Camera();
     this.renderer = new Renderer();
     this.resources = new Resources(Sources);

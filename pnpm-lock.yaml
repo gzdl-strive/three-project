@@ -29,15 +29,21 @@ importers:
   packages/zodiac:
     specifiers:
       '@gzdl/utils': workspace:^1.0.1
+      '@types/dat.gui': ^0.7.7
       '@types/node': ^18.11.18
       '@types/three': ^0.148.0
+      dat.gui: ^0.7.9
+      gsap: ^3.11.4
       three: ^0.148.0
       typescript: ^4.9.3
       vite: ^4.1.0
     dependencies:
       '@gzdl/utils': link:../../utils
+      dat.gui: 0.7.9
+      gsap: 3.11.4
       three: 0.148.0
     devDependencies:
+      '@types/dat.gui': 0.7.7
       '@types/node': 18.11.18
       '@types/three': 0.148.0
       typescript: 4.9.4
@@ -245,6 +251,10 @@ packages:
     requiresBuild: true
     dev: true
     optional: true
+
+  /@types/dat.gui/0.7.7:
+    resolution: {integrity: sha512-CxLCme0He5Jk3uQwfO/fGZMyNhb/ypANzqX0yU9lviBQMlen5SOvQTBQ/Cd9x5mFlUAK5Tk8RgvTyLj1nYkz+w==}
+    dev: true
 
   /@types/node/18.11.18:
     resolution: {integrity: sha512-DHQpWGjyQKSHj3ebjFI/wRKcqQcdR+MoFBygntYOZytCqNfkd2ZC4ARDJ2DQqhjH5p85Nnd3jhUJIXrszFX/JA==}

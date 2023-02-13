@@ -1,4 +1,4 @@
-import '@/style/index.css';
+import './style/index.css';
 import Experience from './Experience/Experience';
 
 const canvas = document.querySelector('canvas.webgl') as HTMLCanvasElement;

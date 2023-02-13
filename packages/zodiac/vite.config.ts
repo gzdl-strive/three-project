@@ -7,11 +7,6 @@ export default defineConfig({
     port: 8889,
     open: true
   },
-  resolve: {
-    alias: {
-      '@': path.resolve(__dirname, './src')
-    }
-  },
   build: {
     outDir: 'dist',
     sourcemap: false,
