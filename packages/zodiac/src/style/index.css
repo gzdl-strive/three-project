@@ -3,11 +3,20 @@
 /* Canvas画布 */
 .experience {
   position: fixed;
-  width: 100vw;
-  height: 100vh;
-}
-
-.experience .webgl {
+  top: 0;
+  left: 0;
   width: 100%;
   height: 100%;
+}
+
+.webgl {
+  width: 100%;
+  height: 100%;
+}
+
+.webgl.cursor-grab {
+  cursor: grab;
+}
+.webgl.cursor-grabbing {
+  cursor: grabbing;
 }

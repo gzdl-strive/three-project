@@ -2,19 +2,18 @@ import * as THREE from 'three';
 import Experience from '../Experience/Experience';
 import Resources from '../utils/Resources';
 import Debug from '../utils/Debug';
-import { EnvironmentDebugParameter, EnvironmentMap } from './typing';
-// import GSAP from 'gsap';
+import { EnvironmentDebugParameter } from './typing';
+import { DebugFolder } from '../utils/typing';
 
 export default class Environment {
   experience: Experience;
   scene: THREE.Scene;
   resources: Resources;
   debug: Debug;
-  debugFolder: dat.GUI | null;
+  debugFolder: DebugFolder;
   parameters: EnvironmentDebugParameter | null;
   sunLight: THREE.DirectionalLight | null;
   ambientLight: THREE.AmbientLight | null;
-  environmentMap: EnvironmentMap;
   constructor() {
     this.experience = new Experience();
     this.scene = this.experience.scene;
@@ -25,15 +24,11 @@ export default class Environment {
 
     this.sunLight = null;
     this.ambientLight = null;
-    this.environmentMap = {
-      texture: (this.resources.items.environmentMapTexture as THREE.CubeTexture)
-    };
 
     this.debug.active && this.initDebug();
 
     this.setSunLight();
     this.setAmbientLight();
-    this.setEnvironmentMap();
   }
 
   // 初始化debug
@@ -54,8 +49,8 @@ export default class Environment {
     this.sunLight.shadow.mapSize.set(2048, 2048);
     this.sunLight.shadow.normalBias = 0.05;
     // helper
-    const helper = new THREE.CameraHelper(this.sunLight.shadow.camera);
-    this.scene.add(helper);
+    // const helper = new THREE.CameraHelper(this.sunLight.shadow.camera);
+    // this.scene.add(helper);
 
     this.sunLight.position.set(4, 7, -3);
     this.scene.add(this.sunLight);
@@ -110,11 +105,5 @@ export default class Environment {
   setAmbientLight() {
     this.ambientLight = new THREE.AmbientLight(0xffffff, 1);
     this.scene.add(this.ambientLight);
-  }
-
-  // 环境贴图
-  setEnvironmentMap() {
-    this.environmentMap.texture.encoding = THREE.sRGBEncoding;
-    this.scene.background = this.environmentMap.texture;
   }
 }

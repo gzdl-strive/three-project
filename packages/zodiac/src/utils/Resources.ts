@@ -1,4 +1,4 @@
-import * as THREE from 'three';
+// import * as THREE from 'three';
 import { Pubsub } from '@gzdl/utils';
 import { GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader';
 import { DRACOLoader } from 'three/examples/jsm/loaders/DRACOLoader';
@@ -30,8 +30,6 @@ export default class Resources extends Pubsub {
     this.loaders.dracoLoader = new DRACOLoader();
     this.loaders.dracoLoader.setDecoderPath('/draco/');
     this.loaders.gltfLoader.setDRACOLoader(this.loaders.dracoLoader);
-    this.loaders.cubeTextureLoader = new THREE.CubeTextureLoader();
-    this.loaders.textureLoader = new THREE.TextureLoader();
   }
 
   startLoading() {
@@ -45,20 +43,6 @@ export default class Resources extends Pubsub {
               this.sourceLoaded(source, file);
             }
           )
-      } else if (source.type === 'cubeTexture') {
-        this.loaders.cubeTextureLoader?.load(
-          source.path as string[],
-          (file) => {
-            this.sourceLoaded(source, file);
-          }
-        )
-      } else if (source.type === 'texture') {
-        this.loaders.textureLoader?.load(
-          source.path as string,
-          (file: THREE.Texture)=> {
-            this.sourceLoaded(source, file);
-          }
-        )
       }
     }
   }
@@ -67,6 +51,7 @@ export default class Resources extends Pubsub {
     this.items[source.name] = file;
 
     this.loaded++;
+    this.emit('progress', [this.loaded / this.toLoad]);
     if (this.loaded === this.toLoad) {
       this.emit('ready');
     }
