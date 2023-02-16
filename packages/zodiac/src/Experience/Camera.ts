@@ -2,14 +2,12 @@ import * as THREE from 'three';
 import { Sizes } from '@gzdl/utils';
 import Experience from './Experience';
 import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls';
-import Renderer from './Renderer';
 
 class Camera {
   experience: Experience;
   sizes: Sizes;
   scene: THREE.Scene;
   canvas: HTMLCanvasElement | undefined;
-  renderer: Renderer;
   perspectiveCamera: THREE.PerspectiveCamera | null;
   controls: OrbitControls | null;
   helper: THREE.CameraHelper | null;
@@ -24,7 +22,6 @@ class Camera {
     this.sizes = this.experience.sizes;
     this.scene = this.experience.scene;
     this.canvas = this.experience.canvas;
-    this.renderer = this.experience.renderer;
 
     this.perspectiveCamera = null;
     this.controls = null;
@@ -41,7 +38,7 @@ class Camera {
     this.setZoom();
     this.setPan();
     this.setOrbitControls();
-    this.setCameraHelper();
+    // this.setCameraHelper();
   }
 
   setAngle() {
@@ -82,7 +79,6 @@ class Camera {
     document.addEventListener('mousewheel', (_event: any) => {
       this.zoom.targetValue += _event.deltaY * 0.001
       this.zoom.targetValue = Math.min(Math.max(this.zoom.targetValue, 0), 1)
-      console.log(this.zoom.targetValue);
     }, { passive: true })
   }
 
@@ -117,32 +113,32 @@ class Camera {
 
     this.pan.enable = () => {
       this.pan.enabled = true
-
+      
       // Update cursor
-      // this.renderer.domElement.classList.add('has-cursor-grab')
+      this.canvas?.classList.add('cursor-grab');
     }
 
     this.pan.disable = () => {
       this.pan.enabled = false
 
       // Update cursor
-      // this.renderer.domElement.classList.remove('has-cursor-grab')
+      this.canvas?.classList.remove('has-cursor-grab')
     }
 
     this.pan.down = (_x: number, _y: number) => {
       if (!this.pan.enabled) {
-        return
+        return;
       }
 
       // Update cursor
-      // this.renderer.domElement.classList.add('has-cursor-grabbing')
+      this.canvas?.classList.add('has-cursor-grabbing')
 
       // Activate
       this.pan.active = true
 
       // Update mouse position
-      // this.pan.mouse.x = (_x / this.sizes.viewport.width) * 2 - 1
-      // this.pan.mouse.y = - (_y / this.sizes.viewport.height) * 2 + 1
+      this.pan.mouse.x = (_x / this.sizes.width) * 2 - 1
+      this.pan.mouse.y = - (_y / this.sizes.height) * 2 + 1
 
       // Get start position
       this.pan.raycaster.setFromCamera(this.pan.mouse, this.perspectiveCamera)
@@ -157,15 +153,15 @@ class Camera {
 
     this.pan.move = (_x: number, _y: number) => {
       if (!this.pan.enabled) {
-        return
+        return;
       }
 
       if (!this.pan.active) {
-        return
+        return;
       }
 
-      // this.pan.mouse.x = (_x / this.sizes.viewport.width) * 2 - 1
-      // this.pan.mouse.y = - (_y / this.sizes.viewport.height) * 2 + 1
+      this.pan.mouse.x = (_x / this.sizes.width) * 2 - 1
+      this.pan.mouse.y = - (_y / this.sizes.height) * 2 + 1
 
       this.pan.needsUpdate = true
     }
@@ -175,7 +171,7 @@ class Camera {
       this.pan.active = false
 
       // Update cursor
-      // this.renderer.domElement.classList.remove('has-cursor-grabbing')
+      this.canvas?.classList.remove('cursor-grabbing');
     }
 
     // Mouse

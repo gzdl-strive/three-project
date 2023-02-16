@@ -14,9 +14,12 @@
   height: 100%;
 }
 
-.webgl.cursor-grab {
+.cursor-grab {
   cursor: grab;
 }
-.webgl.cursor-grabbing {
+.cursor-grabbing {
   cursor: grabbing;
+}
+.loading-pointer {
+  cursor: pointer;
 }
