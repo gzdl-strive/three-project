@@ -51,6 +51,7 @@ class Floor {
     const mesh = new THREE.Mesh(geometry, material);
     mesh.frustumCulled = false;
     mesh.matrixAutoUpdate = false;
+    mesh.receiveShadow = true;
     mesh.updateMatrix();
     this.floor.add(mesh);
     this.scene.add(this.floor);

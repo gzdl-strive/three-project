@@ -35,7 +35,7 @@ class Zodiac {
         })
       }
       this.actualZodiac.scale.set(0.6, 0.6, 0.6);
-      this.scene.add(this.actualZodiac);
+      this.scene.add(child);
     });
   }
 

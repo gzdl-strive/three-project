@@ -1,0 +1,137 @@
+import * as THREE from 'three';
+import CANNON from 'cannon';
+import Experience from '../Experience/Experience';
+import { Time, Sizes } from '@gzdl/utils';
+import { PhysicsFloor, PhysicsMaterials } from './typing';
+import Controls from './Controls';
+
+class Physics {
+  experience: Experience;
+  scene: THREE.Scene;
+  controls: Controls;
+  world: CANNON.World;
+  floor: PhysicsFloor;
+  materials: PhysicsMaterials;
+  ball: CANNON.Body | null;
+  scalingFactor: number;
+  time: Time;
+  sizes: Sizes;
+  objectsToUpdate: any;
+  constructor() {
+    this.experience = new Experience();
+    this.scene = this.experience.scene;
+    this.controls = this.experience.world.controls;
+    this.time = this.experience.time;
+    this.sizes = this.experience.sizes;
+
+    this.world = new CANNON.World();
+    this.materials = {};
+    this.floor = {};
+    this.ball = null;
+    this.scalingFactor = 0.05;
+
+    this.objectsToUpdate = [];
+
+    this.setWorld();
+    this.setMaterials();
+    this.setFloor();
+    this.setBall();
+    this.setBaseObjects();
+  }
+
+  setWorld() {
+    this.world.gravity.set(0, 0, -3.25);
+    this.world.allowSleep = true;
+    this.world.defaultContactMaterial.friction = 0;
+    this.world.defaultContactMaterial.restitution = 0.2;
+  }
+
+  setMaterials() {
+    this.materials.items = {
+      floor: new CANNON.Material('floorMaterial'),
+      dummy: new CANNON.Material('dummyMaterial')
+    }
+    this.materials.contacts = {
+      floorDummy: new CANNON.ContactMaterial(this.materials.items.floor, this.materials.items.dummy, { friction: 0.05, restitution: 0.3, contactEquationStiffness: 1000 }),
+      dummyDummy: new CANNON.ContactMaterial(this.materials.items.dummy, this.materials.items.dummy, { friction: 0.3, restitution: 0, contactEquationStiffness: 1000 })
+    }
+  }
+
+  setFloor() {
+    this.floor.body = new CANNON.Body({
+      mass: 0,
+      shape: new CANNON.Plane(),
+      material: this.materials.items!.floor
+    });
+
+    this.world.addBody(this.floor.body);
+  }
+
+  setBall() {
+    const ball = new CANNON.Sphere(0.5);
+    const body = new CANNON.Body({
+      mass: 5,
+      position: new CANNON.Vec3(0, 0, 5),
+      shape: ball,
+      material: this.materials.items!.dummy,
+      fixedRotation: false
+    });
+    body.position.set(0, 0, 5);
+    this.world.addBody(body);
+
+    this.ball = body;
+    
+    this.objectsToUpdate.push({
+      mesh: this.experience.world.ball.ballMesh,
+      body
+    });
+  }
+
+  moveBall() {
+    const { up, down, left, right } = this.controls.actions;
+    const moveX = Number(right) - Number(left);
+    const moveY = Number(up) - Number(down);
+
+    if (!this.ball) return;
+    if (moveX === 0 && moveY === 0) return;
+    this.ball.position.x += this.scalingFactor * moveX;
+    this.ball.position.y += this.scalingFactor * moveY;
+    const rotationQuaternion = new CANNON.Quaternion(0, 0, 0, 1);
+    if (moveX === 1 || moveX === -1) {
+      rotationQuaternion.setFromAxisAngle(new CANNON.Vec3(0, moveX, 0), 0.08);
+    } else if (moveY === 1 || moveY === -1) {
+      rotationQuaternion.setFromAxisAngle(new CANNON.Vec3(-moveY, 0, 0), 0.08);
+    }
+    this.ball.quaternion = this.ball.quaternion.mult(rotationQuaternion);
+  }
+
+  setBaseObjects() {
+    const baseList = this.experience.world.baseObjects.basedObjectsList;
+    baseList.forEach(base => {
+      const basedShape = new CANNON.Cylinder(base.scale.x, base.scale.y, base.scale.z, 8);
+      const basedMaterial = this.materials.items?.dummy;
+      const basedBody = new CANNON.Body({
+        position: new CANNON.Vec3(base.position.x, base.position.y, base.position.z),
+        mass: 100000,
+        shape: basedShape,
+        material: basedMaterial
+      });
+      basedBody.allowSleep = true;
+      basedBody.sleepSpeedLimit = 0.01;
+      this.world.addBody(basedBody);
+    });
+  }
+
+  update() {
+    if (document.hasFocus()) {
+      this.world.step(1 / 60, this.time.delta, 5);
+      this.moveBall();
+      for (const object of this.objectsToUpdate) {
+        object.mesh.position.copy(object.body.position);
+        object.mesh.quaternion.copy(object.body.quaternion);
+      }
+    }
+  }
+}
+
+export default Physics;

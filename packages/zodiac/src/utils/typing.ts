@@ -1,3 +1,4 @@
+import { TextureLoader } from "three";
 import { DRACOLoader } from "three/examples/jsm/loaders/DRACOLoader";
 import { GLTFLoader } from "three/examples/jsm/loaders/GLTFLoader";
 
@@ -9,12 +10,17 @@ export type ModelType = {
 export interface Loaders {
   gltfLoader?: GLTFLoader;
   dracoLoader?: DRACOLoader;
+  textureLoader?: TextureLoader;
 }
 export type Loaders_Partial = Partial<Loaders>;
 /* 文件类型 */
 export type FileType = Record<string, Object>;
 /* 12生肖 */
 export interface ZodiacType {
+  scene: THREE.Group;
+}
+/* 基座类型 */
+export interface BasedType {
   scene: THREE.Group;
 }
 export type DebugFolder = dat.GUI | null;

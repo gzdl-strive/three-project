@@ -83,7 +83,7 @@ class Loading extends Pubsub {
       window.requestAnimationFrame(() => {
         // this.loadingBorderMaterial && GSAP.to(this.loadingBorderMaterial.uniforms.uAlpha, 0.3, { value: 0.3 });
         GSAP.to((this.loadingText as LoadingOrStartText).material, { opacity: 0, delay: 0.1 });
-        GSAP.to((this.startText as LoadingOrStartText).material, { opacity: 1, delay: 0.4 });
+        GSAP.to((this.startText as LoadingOrStartText).material, { opacity: 1, delay: 0.3 });
       });
     });
   }
@@ -191,15 +191,16 @@ class Loading extends Pubsub {
     // Animate
     GSAP.to(this.fence.mesh!.position, {
       z: -0.5,
+      duration: 0.3,
       onComplete: () => {
         // 栅栏
         this.fenceOut();
         GSAP.fromTo(this.fence.material!.uniforms.uBorderAlpha, { value: 1 }, { value: 0 });
         // 边框
         GSAP.fromTo(this.loadingBorderMaterial!.uniforms.uLoadProgress, { value: 0.5 }, { value: 0 });
-        GSAP.fromTo(this.loadingBorderMaterial!.uniforms.uAlpha, { value: borderVal }, { value: 0, delay: 0.5 });
+        GSAP.fromTo(this.loadingBorderMaterial!.uniforms.uAlpha, { value: borderVal }, { value: 0, delay: 0.15 });
         // 开始文本
-        GSAP.to((this.startText as LoadingOrStartText).material, { opacity: 0, delay: 0.8 });
+        GSAP.to((this.startText as LoadingOrStartText).material, { opacity: 0, delay: 0.3 });
         this.active = false;
         this.emit('start');
       }

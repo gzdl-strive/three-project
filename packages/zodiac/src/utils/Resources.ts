@@ -1,4 +1,4 @@
-// import * as THREE from 'three';
+import * as THREE from 'three';
 import { Pubsub } from '@gzdl/utils';
 import { GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader';
 import { DRACOLoader } from 'three/examples/jsm/loaders/DRACOLoader';
@@ -30,6 +30,7 @@ export default class Resources extends Pubsub {
     this.loaders.dracoLoader = new DRACOLoader();
     this.loaders.dracoLoader.setDecoderPath('/draco/');
     this.loaders.gltfLoader.setDRACOLoader(this.loaders.dracoLoader);
+    this.loaders.textureLoader = new THREE.TextureLoader();
   }
 
   startLoading() {
@@ -37,12 +38,31 @@ export default class Resources extends Pubsub {
     for (const source of this.sources) {
       // 模型
       if (source.type === 'glbModel') {
+        let bakedMaterial: THREE.MeshBasicMaterial | null = null;
+        if (source.name === 'based' && source.imgPath) {
+          const bakedTexure = this.loaders.textureLoader!.load(source.imgPath);
+          bakedTexure.flipY = false;
+          bakedTexure.encoding = THREE.sRGBEncoding;
+          bakedMaterial = new THREE.MeshBasicMaterial({
+            map: bakedTexure
+          });
+        }
         this.loaders.gltfLoader?.load(
-            source.path as string,
-            (file: ModelType) => {
-              this.sourceLoaded(source, file);
-            }
-          )
+          source.path,
+          (file: ModelType) => {
+            bakedMaterial && file.scene.traverse((child: any) => {
+              child.material = bakedMaterial;
+            });
+            this.sourceLoaded(source, file);
+          }
+        )
+      } else if (source.type === 'texture') {
+        this.loaders.textureLoader?.load(
+          source.path,
+          (file: THREE.Texture) => {
+            this.sourceLoaded(source, file);
+          }
+        )
       }
     }
   }
