@@ -110,14 +110,23 @@ class Physics {
     baseList.forEach(base => {
       const basedShape = new CANNON.Cylinder(base.scale.x, base.scale.y, base.scale.z, 8);
       const basedMaterial = this.materials.items?.dummy;
+      const rotationQuaternion = new CANNON.Quaternion();
+      rotationQuaternion.setFromEuler(base.rotation.x, base.rotation.y, base.rotation.z, base.rotation.order);
+      console.log(base.position);
+      
       const basedBody = new CANNON.Body({
         position: new CANNON.Vec3(base.position.x, base.position.y, base.position.z),
-        mass: 100000,
+        mass: 0,
         shape: basedShape,
         material: basedMaterial
       });
+      basedBody.quaternion = basedBody.quaternion.mult(rotationQuaternion);
       basedBody.allowSleep = true;
       basedBody.sleepSpeedLimit = 0.01;
+      this.objectsToUpdate.push({
+        mesh: base,
+        body: basedBody
+      });
       this.world.addBody(basedBody);
     });
   }

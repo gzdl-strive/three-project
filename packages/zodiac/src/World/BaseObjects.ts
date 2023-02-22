@@ -29,8 +29,8 @@ class BaseObjects {
       
       if (child.name === 'based') {
         child.rotateX(Math.PI / 2);
+        child.position.y = -5;
         child.scale.set(3, 3, 3);
-        child.position.y = -15;
         this.basedObjectsList.push(child as THREE.Mesh);
         this.scene.add(child); 
       }
