@@ -10,12 +10,6 @@ const sources: SourceItem[] = [
     name: 'zodiac',
     type: 'glbModel',
     path: '/models/zodiac.glb'
-  },
-  {
-    name: 'based',
-    type: 'glbModel',
-    path: '/models/based.glb',
-    imgPath: '/textures/based_baked.jpg'
   }
 ];
 

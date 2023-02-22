@@ -24,7 +24,8 @@ class Zodiac {
   }
 
   setModel() {
-    this.actualZodiac.children.forEach(child => {
+    this.actualZodiac.children.forEach(child => {console.log(child);
+      
       child.castShadow = true;
       child.receiveShadow = true;
 
@@ -34,7 +35,7 @@ class Zodiac {
           subChild.receiveShadow = true;
         })
       }
-      this.actualZodiac.scale.set(0.6, 0.6, 0.6);
+      child.rotateX(Math.PI / 2);
       this.scene.add(child);
     });
   }

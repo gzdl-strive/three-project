@@ -38,21 +38,11 @@ export default class Resources extends Pubsub {
     for (const source of this.sources) {
       // 模型
       if (source.type === 'glbModel') {
-        let bakedMaterial: THREE.MeshBasicMaterial | null = null;
-        if (source.name === 'based' && source.imgPath) {
-          const bakedTexure = this.loaders.textureLoader!.load(source.imgPath);
-          bakedTexure.flipY = false;
-          bakedTexure.encoding = THREE.sRGBEncoding;
-          bakedMaterial = new THREE.MeshBasicMaterial({
-            map: bakedTexure
-          });
-        }
         this.loaders.gltfLoader?.load(
           source.path,
           (file: ModelType) => {
-            bakedMaterial && file.scene.traverse((child: any) => {
-              child.material = bakedMaterial;
-            });
+            console.log(file);
+            
             this.sourceLoaded(source, file);
           }
         )

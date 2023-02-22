@@ -8,7 +8,6 @@ import Floor from './Floor';
 import Loading from './Loading';
 import Zodiac from './Zodiac';
 import Ball from './Ball';
-import BaseObjects from './BaseObjects';
 import Controls from './Controls';
 import Physics from './Physics';
 
@@ -24,7 +23,6 @@ export default class World {
   loading: Loading;
   zodiac!: Zodiac;
   ball!: Ball;
-  baseObjects!: BaseObjects;
   controls!: Controls;
   constructor() {
     this.experience = new Experience();
@@ -46,10 +44,9 @@ export default class World {
       }, 2000);
       this.shadows = new Shadows();
       this.ball = new Ball();
-      this.baseObjects = new BaseObjects();
       this.controls = new Controls();
       this.physics = new Physics();
-      // this.zodiac = new Zodiac();
+      this.zodiac = new Zodiac();
     });
   }
 

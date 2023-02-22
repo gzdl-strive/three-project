@@ -1,3 +1,5 @@
+import * as CANNON from 'cannon-es';
+
 /* 太阳光参数 */
 export interface SunLightParameter {
   position: THREE.Vector3;

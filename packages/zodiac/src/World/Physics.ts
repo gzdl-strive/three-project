@@ -1,5 +1,5 @@
 import * as THREE from 'three';
-import CANNON from 'cannon';
+import * as CANNON from 'cannon-es';
 import Experience from '../Experience/Experience';
 import { Time, Sizes } from '@gzdl/utils';
 import { PhysicsFloor, PhysicsMaterials } from './typing';
@@ -36,7 +36,6 @@ class Physics {
     this.setMaterials();
     this.setFloor();
     this.setBall();
-    this.setBaseObjects();
   }
 
   setWorld() {
@@ -70,7 +69,7 @@ class Physics {
   setBall() {
     const ball = new CANNON.Sphere(0.5);
     const body = new CANNON.Body({
-      mass: 5,
+      mass: 1,
       position: new CANNON.Vec3(0, 0, 5),
       shape: ball,
       material: this.materials.items!.dummy,
@@ -103,32 +102,6 @@ class Physics {
       rotationQuaternion.setFromAxisAngle(new CANNON.Vec3(-moveY, 0, 0), 0.08);
     }
     this.ball.quaternion = this.ball.quaternion.mult(rotationQuaternion);
-  }
-
-  setBaseObjects() {
-    const baseList = this.experience.world.baseObjects.basedObjectsList;
-    baseList.forEach(base => {
-      const basedShape = new CANNON.Cylinder(base.scale.x, base.scale.y, base.scale.z, 8);
-      const basedMaterial = this.materials.items?.dummy;
-      const rotationQuaternion = new CANNON.Quaternion();
-      rotationQuaternion.setFromEuler(base.rotation.x, base.rotation.y, base.rotation.z, base.rotation.order);
-      console.log(base.position);
-      
-      const basedBody = new CANNON.Body({
-        position: new CANNON.Vec3(base.position.x, base.position.y, base.position.z),
-        mass: 0,
-        shape: basedShape,
-        material: basedMaterial
-      });
-      basedBody.quaternion = basedBody.quaternion.mult(rotationQuaternion);
-      basedBody.allowSleep = true;
-      basedBody.sleepSpeedLimit = 0.01;
-      this.objectsToUpdate.push({
-        mesh: base,
-        body: basedBody
-      });
-      this.world.addBody(basedBody);
-    });
   }
 
   update() {
