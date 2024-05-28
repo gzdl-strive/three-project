@@ -1,0 +1,13 @@
+@import "./reset.css"; /* 重置样式 */
+
+/* Canvas画布 */
+.experience {
+  position: fixed;
+  width: 100vw;
+  height: 100vh;
+}
+
+.experience .webgl {
+  width: 100%;
+  height: 100%;
+}

@@ -39,7 +39,7 @@ export default class Resources extends Pubsub {
     // load each source
     for (const source of this.sources) {
       // 模型
-      if (source.type === 'glbModel') {
+      if (source.type === 'glbModel' && source.name === 'room') {
         const textureLoader = new THREE.TextureLoader();
         // Textures
         const bakedTexture = textureLoader.load(source.imgPath);
@@ -56,6 +56,19 @@ export default class Resources extends Pubsub {
             file.scene.traverse((child: any) => {
               child.material = bakedMaterial;
             })
+            this.sourceLoaded(source, file);
+          }
+        )
+      } else if (source.type === 'glbModel' && source.name === 'tv') {
+        const material = new THREE.MeshBasicMaterial({
+          color: 0xffffff
+        });
+        this.loaders.gltfLoader.load(
+          source.path,
+          (file: any) => {
+            file.scene.traverse((child: any) => {
+              child.material = material;
+            });
             this.sourceLoaded(source, file);
           }
         )

@@ -4,7 +4,8 @@
   "description": "ThreeJS的练习",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "dev:my-single-room": "cd packages/my_single_room && pnpm run dev",
+    "build:my-single-room": "cd packages/my_single_room && pnpm run build"
   },
   "keywords": [],
   "author": "",

@@ -10,7 +10,13 @@ export interface Video {
 export interface VideoTexture {
   [key: string]: THREE.VideoTexture;
 }
+/* 房子 */
 export interface RoomType {
   scene: THREE.Group;
   animations: THREE.AnimationClip[];
 }
+/* TV */
+export interface TvType {
+  scene: THREE.Group;
+}
+export type Lerp = Record<'current' | 'target' | 'ease', number>;
